@@ -20,8 +20,7 @@
         "isDefault": false,
         "name": "MTC Houston Labs",
         "state": "Enabled",
-        "tenantId": "a8e59e50-6360-4372-a629-9a9bf465158e",
-        "user": {
+        "tenantId": "a8e59e50-6360-4372-a629-9a9bf46515        "user": {
           "name": "ratella@mtchouston.net",
           "type": "user"
         }
@@ -51,11 +50,11 @@
     ```
 2.  Create your AKS cluster using Kubernetes with the following command:
     ```
-    az aks create --orchestrator-type=kubernetes --resource-group=<RESOURCE_GROUP_NAME> --name=<CLUSTER_NAME> --dns-prefix=<ANYVALUE> --generate-ssh-keys
+    az aks create --resource-group=<RESOURCE_GROUP_NAME> --name=<CLUSTER_NAME> --dns-name-prefix=<ANYVALUE> --generate-ssh-keys
     ```
     **Example**
     ```
-    az aks create --orchestrator-type=kubernetes --resource-group=aksWorkshop --name=akskubernetes --dns-prefix=akstest --generate-ssh-keys
+    az aks create --resource-group=aksWorkshop --name=akskubernetes --dns-name-prefix=akstest --generate-ssh-keys
     ```
 
 ## Task 3: Create an Azure Container Registry
@@ -92,8 +91,7 @@ Kubectl is the command line tool for administering your AKS Kubernetes cluster.
     kubectl version
     ```
 
-## Task 4: Connect to the Cluster with *kubectl*
-1. Run the following commadn to download the client credentials needed to access the Kubernetes cluster:
+## Task 4: Connect to the Cluster with *kubectl*1. Run the following commadn to download the client credentials needed to access the Kubernetes cluster:
 
     ```
     az aks get-credentials --resource-group=<RESOURCE_GROUP_NAME> --name=<CLUSTER_NAME>
@@ -157,5 +155,5 @@ The Kubernetes Dashboard is web interface that provides general-purpose monitori
     ```
     kubectl proxy -p 8001
     ```
-2. Open the browser on you machine and navigate to [http://localhost:8001:/ui](http://localhost:8001:/ui)
+2. Open the browser on you machine and navigate to [http://localhost:8001/ui](http://localhost:8001/ui)
 
