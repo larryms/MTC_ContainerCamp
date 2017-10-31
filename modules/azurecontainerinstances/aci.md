@@ -1,5 +1,9 @@
-# Containers for Developers in Microsoft Azure 
+# Deploying container to an Azure Container Instance
 
+This lab will walk through creating an ASP.Net Core application as container and debugging and then finally deploying the container to the Azure Container Instance.
+
+In this lab you will build the app and create the container on your Windows or Mac machine.
+ 
 Make sure you have installed the following pre-requisites on your machine
 
 | Prerequisites        |            | 
@@ -9,12 +13,13 @@ Make sure you have installed the following pre-requisites on your machine
 | VS Code with C# Plugin    | [Install](https://code.visualstudio.com/Download)      | 
 | Node.js   |  [Install](https://nodejs.org/en/download/)   |
 | Yeoman   | Run from command prompt: **npm install -g yo** |
-| Generator-docker  | Run from command prompt: **npm install -g**
-| Bower | Run from command prompt: **npm install -g bower** |
+| Yeoman generator for Docker  | Run from command prompt: **npm install -g generator-docker**  
+||On Windows run from the folder "Program Files/nodejs/node_modules" |
+| Bower-A package manager for the web | Run from command prompt: **npm install -g bower** |
 | Gulp | Run from command prompt: **npm install -g gulp** |
 
 ## Task 1: Create ASP.NET Core Hello World Application
-1. Open a command prompt and run
+1. Open a command prompt and change your directory to your code location. Then run following commands to create an ASP.Net Core app.
     ```
     md helloworld
     cd helloworld
@@ -31,15 +36,25 @@ Make sure you have installed the following pre-requisites on your machine
     .UseUrls("http://*:8080")
     
     ```
+    Example:
+    ```
+    public static IWebHost BuildWebHost(string[] args) =>
+    WebHost.CreateDefaultBuilder(args)
+        .UseStartup<Startup>()
+        .UseUrls("http://*:8080")
+        .Build();
+    ```
 3. Press **Ctrl+S** to save the changes.
 
-4. Open *Startup.cs* and modify the following line of code to match what is shown:
+4. Open *Startup.cs* and modify the following line of code to match what is shown in the Configure method:
     ```
     await context.Response.WriteAsync($"Hello World v1! {DateTime.Now}");
     ```
 5. Press **Ctrl-S** to save changes.
 
 6. Press **F5** and confirm the app runs correctly by browsing to http://localhost:8080.
+
+7. Stop the run before proceeding to Task 2.
 
 ## Task 2: Create a Docker Image
 To support different developer environments, the .NET Core application will be deployed to Linux.  Modify the application you started in Task 1 as follows:
@@ -50,9 +65,9 @@ To support different developer environments, the .NET Core application will be d
     dotnet publish
     ```
 
-3. Create new file [**Ctrl-N**] and name it *dockerfile* 
+3. Create new file by clicking [**Ctrl-N**] in VS Code and re-name it to *dockerfile*. You can do this by first right-click->Save As->Right Click->Rename. Ensure that there is no extension. The file name should be simply 'dockerfile'.
 
-4. Add the following.  Make sure to replace **<appname>** in **ENTRYPOINT** to match your application name.
+4. Add the following.  Make sure to replace **\<appname>** in **ENTRYPOINT** last line to match your application name. For example helloworld.dll
     ```
     FROM microsoft/aspnetcore:2.0
     RUN apt-get update
@@ -67,7 +82,7 @@ To support different developer environments, the .NET Core application will be d
     
 5. Press **Ctrl-S** to save changes.
 
-6. In the Terminal windows, create the Docker image by running the following commands:
+6. In the Terminal windows, create the Docker image by running the following commands.  Ensure to substitute <your_image_name> with for example helloworldfromlinux :
     ```
     docker build -t <your_image_name> .
     docker run -d -p 8080:8080  <your_image_name>
