@@ -92,8 +92,7 @@ Kubectl is the command line tool for administering your AKS Kubernetes cluster.
     kubectl version
     ```
 
-## Task 4: Connect to the Cluster with *kubectl*
-1. Run the following commadn to download the client credentials needed to access the Kubernetes cluster:
+## Task 4: Connect to the Cluster with *kubectl*1. Run the following commadn to download the client credentials needed to access the Kubernetes cluster:
 
     ```
     az aks get-credentials --resource-group=<RESOURCE_GROUP_NAME> --name=<CLUSTER_NAME>
@@ -157,5 +156,5 @@ The Kubernetes Dashboard is web interface that provides general-purpose monitori
     ```
     kubectl proxy -p 8001
     ```
-2. Open the browser on you machine and navigate to [http://localhost:8001:/ui](http://localhost:8001:/ui)
+2. Open the browser on you machine and navigate to [http://localhost:8001/ui](http://localhost:8001/ui)
 
