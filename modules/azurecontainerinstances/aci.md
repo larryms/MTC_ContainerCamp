@@ -1,20 +1,25 @@
-# Containers for Developers in Microsoft Azure 
+# Deploying container to an Azure Container Instance
 
+This lab will walk through creating an ASP.Net Core application as container and debugging and then finally deploying the container to the Azure Container Instance.
+
+In this lab you will build the app and create the container on your Windows or Mac machine.
+ 
 Make sure you have installed the following pre-requisites on your machine
 
 | Prerequisites        |            | 
 | ------------- |:-------------| 
-| .NET Core     | right-aligned | 
+| .NET Core 2.0    | [Install](https://www.microsoft.com/net/download/core) | 
 | Docker     | Download and install: [Docker Windows](https://download.docker.com/win/stable/InstallDocker.msi) - [Docker Mac](https://download.docker.com/mac/stable/Docker.dmg)| 
 | VS Code with C# Plugin    | [Install](https://code.visualstudio.com/Download)      | 
 | Node.js   |  [Install](https://nodejs.org/en/download/)   |
 | Yeoman   | Run from command prompt: **npm install -g yo** |
-| Generator-docker  | Run from command prompt: **npm install -g**
-| Bower | Run from command prompt: **npm install -g bower** |
+| Yeoman generator for Docker  | Run from command prompt: **npm install -g generator-docker**  
+||On Windows run from the folder "Program Files/nodejs/node_modules" |
+| Bower-A package manager for the web | Run from command prompt: **npm install -g bower** |
 | Gulp | Run from command prompt: **npm install -g gulp** |
 
 ## Task 1: Create ASP.NET Core Hello World Application
-1. Open a command prompt and run
+1. Open a command prompt and change your directory to your code location. Then run following commands to create an ASP.Net Core app.
     ```
     md helloworld
     cd helloworld
@@ -26,57 +31,58 @@ Make sure you have installed the following pre-requisites on your machine
 
     Add missing assets  necessary to debug the application by selecting **Yes** on the notification bar.
     
-    Add the following line of code 
+    Add the following line of code before the line ```.Build();```
     ```c-sharp
     .UseUrls("http://*:8080")
     
     ```
+    Example:
+    ```
+    public static IWebHost BuildWebHost(string[] args) =>
+    WebHost.CreateDefaultBuilder(args)
+        .UseStartup<Startup>()
+        .UseUrls("http://*:8080")
+        .Build();
+    ```
 3. Press **Ctrl+S** to save the changes.
 
-4. Open *Startup.cs* and modify the following line of code to match what is shown:
+4. Open *Startup.cs* and modify the following line of code to match what is shown in the Configure method:
     ```
     await context.Response.WriteAsync($"Hello World v1! {DateTime.Now}");
     ```
 5. Press **Ctrl-S** to save changes.
 
-6. Press **F5** and confirm the app runs correctly.
+6. Press **F5** and confirm the app runs correctly by browsing to http://localhost:8080.
+
+7. Stop the run before proceeding to Task 2.
 
 ## Task 2: Create a Docker Image
-To support different developer environments, the .NET Core application will be deployed to Linux.  
+To support different developer environments, the .NET Core application will be deployed to Linux.  Modify the application you started in Task 1 as follows:
 
-1. Update *.csproj* with the following:
-
-    ```
-    <PropertyGroup>
-        <TargetFramework>netcoreapp1.1</TargetFramework>
-        <RuntimeIdentifier>win10-x64;debian.8-x64</RuntimeIdentifier>
-      </PropertyGroup>
-    ```
-
-2. Open the VS Code Terminal windows by pressing **Ctrl-`**.   Publish app using VS Code terminal window with the following command: 
+1. Open the VS Code Terminal windows by pressing **Ctrl-`**.   Publish app using VS Code terminal window with the following command: 
     ```
     dotnet restore
     dotnet publish
     ```
 
-3. Create new file [**Ctrl-N**] and name it *dockerfile* 
+3. Create new file by clicking [**Ctrl-N**] in VS Code and re-name it to *dockerfile*. You can do this by first right-click->Save As->Right Click->Rename. Ensure that there is no extension. The file name should be simply 'dockerfile'.
 
-4. Add the following.  Make sure to replace **<appname>** in **ENTRYPOINT** to match your application name.
+4. Add the following.  Make sure to replace **\<appname>** in **ENTRYPOINT** last line to match your application name. For example helloworld.dll
     ```
-    FROM microsoft/aspnetcore:1.1.2-jessie
+    FROM microsoft/aspnetcore:2.0
     RUN apt-get update
     RUN apt-get install -y curl unzip 
     RUN curl -sSL https://aka.ms/getvsdbgsh | bash /dev/stdin -v latest -l ~/vsdbg
     WORKDIR /app
-    COPY ./bin/Debug/netcoreapp1.1/publish .
+    COPY ./bin/Debug/netcoreapp2.0/publish .
     EXPOSE 8080/tcp
     ENV ASPNETCORE_URLS http://*:8080
-    ENTRYPOINT ["dotnet", "/app/<appname>.dll"]
+    ENTRYPOINT ["dotnet", "/app/helloworld.dll"]
     ```
     
 5. Press **Ctrl-S** to save changes.
 
-6. In the Terminal windows, create the Docker image by running the following commands:
+6. In the Terminal windows, create the Docker image by running the following commands.  Ensure to substitute <your_image_name> with for example helloworldfromlinux :
     ```
     docker build -t <your_image_name> .
     docker run -d -p 8080:8080  <your_image_name>
@@ -97,8 +103,8 @@ To support different developer environments, the .NET Core application will be d
 11. Run the following commands to publish the updated application, create an updated image, and run the image in a new container.
     ```
     dotnet publish
-    docker build -t whackamole .
-    docker run -d -p 8080:8080  whackamole
+    docker build -t <your_image_name> .
+    docker run -d -p 8080:8080  <your_image_name>
     ```
 12. Browse to http://localhost:8080 or IP address listed in Container list (Mac)
 
@@ -109,24 +115,26 @@ To support different developer environments, the .NET Core application will be d
 
 ## Task 3: Debug an Application in a Docker Container
 
+**Note: This section is ungoing an update and may not work correctly at this time**
+
 1. Publish debug version of the application
     ```none
-    **dotnet publish -c Debug -**
+    dotnet publish -c Debug 
     ```
 2. Build a new version of the image
     ```none
-    **docker build -t <your_image_name> --rm .**
+    docker build -t <your_image_name> --rm .
     ```
 3. Find old version and kill
     ```none
-    **docker ps**
-    **docker kill \<*id*\>**
+    docker ps
+    docker kill <image_id>
     ```
 4. Start debug version
     ```none
-    **docker run -d -p 8080:8080 --name debug <your_image_name>**
+    docker run -d -p 8080:8080 --name debug <your_image_name>
     ```
-5. Add the following as the last json object *configurations* array in the *launch.json* (found in  the *.vscode* folder). Make sure to update the *"pipsArgs"* value and the *"sourceFileMap* values accordingly.
+5. Add the following as the last json object in the *configurations* array in the *launch.json* (found in  the *.vscode* folder). Make sure to update the *"pipesArgs"* value and the *"sourceFileMap* values accordingly.
     ```
     {
                 "name": ".NET Core Remote Attach",
@@ -141,7 +149,7 @@ To support different developer environments, the .NET Core application will be d
                     "quoteArgs": true
                 },
                 "sourceFileMap": {
-                    "<path to your application's root directory>: "${workspaceRoot}"
+                    "<path to your application's root directory>": "${workspaceRoot}"
                 },
                 "justMyCode": true
     }
