@@ -163,3 +163,8 @@ The Kubernetes Dashboard is web interface that provides general-purpose monitori
     kubectl proxy -p 8001
     ```
 2. Open the browser on you machine and navigate to [http://localhost:8001/ui](http://localhost:8001/ui)
+
+3. You can also try:
+    ```
+     az aks browse -n [Cluster Name] -g [Resource Group] 
+    ```
