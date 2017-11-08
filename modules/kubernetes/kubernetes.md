@@ -120,7 +120,7 @@ At the end of this task you will have a total of 3 pods. Two for the app tier an
     ```
 5. Deploy a Kubernetes service for the mysql database using the following command:
     ```
-    kubectl create -f .\mysql-deployment.yaml
+    kubectl create -f .\mysql-service.yaml
     ```
 6. Deploy the web UX and web service of the application using the following command:
     ```none
