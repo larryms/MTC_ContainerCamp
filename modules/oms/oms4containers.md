@@ -29,20 +29,10 @@ In this section, we are going to set up a container to integrate our Docker envi
 
 > Phew, that's a lot of set up!  Don't worry, it's worth it!<br>
 
-## Task 2: Run the OMS agent as a Docker container
+## Task 2: Leveraging Azure Container Monitoring Solution
 
-Run the following command:
+![ContainerMonitoring](containers-diagram.png)<br>
 
-```
-sudo docker run --privileged -d -v /var/run/docker.sock:/var/run/docker.sock \
--v /var/log:/var/log  -e WSID=$WSID -e KEY=$KEY \
--p 127.0.0.1:25225:25225 -p 127.0.0.1:25224:25224/udp \
---name="omsagent" -h=`hostname` --restart=always microsoft/oms
-```
-_If this command returns an error, try running `sudo /opt/microsoft/omsagent/bin/omsadmin.sh -X`.  But please only do this in the event of an error.  Check for typos first as this can often be the cause of the error._
-
-## Task 3: Monitor
-Check OMS Docker view after a few minutes by clicking on the Containers tile on the OMS portal home page.<br>
-![omscontainerstile](containerstile.png)<br>  _Note this can take some time to initially appear.  You may want go on to another task and then come back to this._
-
+1. Please reffer to https://docs.microsoft.com/en-us/azure/log-analytics/log-analytics-containers
+2. Select the orchestration type and setup the Container Monitoring Solution for that specific orchestration. 
 

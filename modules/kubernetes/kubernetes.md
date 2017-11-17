@@ -120,7 +120,7 @@ At the end of this task you will have a total of 3 pods. Two for the app tier an
     ```
 5. Deploy a Kubernetes service for the mysql database using the following command:
     ```
-    kubectl create -f .\mysql-deployment.yaml
+    kubectl create -f .\mysql-service.yaml
     ```
 6. Deploy the web UX and web service of the application using the following command:
     ```none
@@ -163,3 +163,8 @@ The Kubernetes Dashboard is web interface that provides general-purpose monitori
     kubectl proxy -p 8001
     ```
 2. Open the browser on you machine and navigate to [http://localhost:8001/ui](http://localhost:8001/ui)
+
+3. You can also try:
+    ```
+     az aks browse -n [Cluster Name] -g [Resource Group] 
+    ```
