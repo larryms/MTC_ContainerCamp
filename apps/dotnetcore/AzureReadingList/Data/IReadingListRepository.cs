@@ -1,4 +1,5 @@
-﻿using AzureReadingList.Models;
+﻿using AzureReadingCore.Models;
+using AzureReadingList.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

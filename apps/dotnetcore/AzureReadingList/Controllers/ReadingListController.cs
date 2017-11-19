@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using AzureReadingList.Data;
 using AzureReadingList.Models;
+using AzureReadingCore.Models;
 
 namespace AzureReadingList.Controllers
 {
@@ -14,6 +15,7 @@ namespace AzureReadingList.Controllers
         // GET: ReadingList
         public async Task<ActionResult> Index()
         {
+            //TODO: call api logic 
             ReadingListViewModel readingListContent = new ReadingListViewModel();
             readingListContent.LibraryBooks = await ReadingListRepository<Recommendation>.GetBooks(d => d.type == "recommendation");
 
@@ -27,6 +29,7 @@ namespace AzureReadingList.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(IFormCollection collection)
         {
+            //TODO: Call api logic
             try
             {
                 Book myNewBookToSave = SaveCollectionAsBook(collection);

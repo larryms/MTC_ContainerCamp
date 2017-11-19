@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AzureReadingList.Models;
 using AzureReadingList.Data;
+using AzureReadingCore.Models;
 
 namespace AzureReadingList.Controllers
 {

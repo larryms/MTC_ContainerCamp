@@ -13,3 +13,8 @@ services:
     - DatabaseId=ReadingList
     - CollectionId=Documentation
     - readerName=testuser
+  azurereadingapi:
+    image: azurereadingapi
+    build:
+      context: ./AzureReadingApi
+      dockerfile: Dockerfile

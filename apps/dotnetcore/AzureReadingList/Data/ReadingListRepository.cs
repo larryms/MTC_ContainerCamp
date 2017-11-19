@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Documents.Linq;
 using System.Linq;
 using System.Linq.Expressions;
+using AzureReadingCore.Models;
 
 namespace AzureReadingList.Data
 {
