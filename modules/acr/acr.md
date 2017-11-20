@@ -1,4 +1,4 @@
-## Deploy Containers to Azure Containers Registry with Continious Deployment
+## Deploy Containers to Azure Containers Registry with Continuous Deployment
 
 In this lab we will create an Azure Web app for container (on Linux) and setup an docker / custom image to be deployed from the new Azure Container Registry via automate the deployment Continious Deployment.
 
