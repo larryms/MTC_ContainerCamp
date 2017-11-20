@@ -170,6 +170,6 @@ The Kubernetes Dashboard is web interface that provides general-purpose monitori
     ```
      az aks browse -n [Cluster Name] -g [Resource Group] 
     ```
-## Managing your K8s cluseter using Cabin app ##
+## Managing your K8s cluster using Cabin app (Optional) ##
 Follow this blog post to install and configure Cabin to manage your k8s cluster on your iOS or Android device:
 [Manageing Azure Kubernetes Managed Service via Cabin app](https://blogs.msdn.microsoft.com/alimaz/2017/10/31/managing-azure-kubernetes-managed-service-aks-using-cabin-app/)
