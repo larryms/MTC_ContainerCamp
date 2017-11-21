@@ -28,7 +28,7 @@ In this lab you will deploy the readinglist application to Kubernetes cluster. I
     oc create -f  https://raw.githubusercontent.com/Microsoft/MTC_ContainerCamp/master/modules/openshift/openshift-mysql.yaml 
     ```
 
- 3. Execute the following command to deploy the web app and web api
+ 3. Execute the following command to deploy the Web App and Web API pod
     ```
     oc create -f https://raw.githubusercontent.com/Microsoft/MTC_ContainerCamp/master/modules/openshift/openshift-readinglist.yaml 
     ```
