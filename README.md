@@ -59,6 +59,4 @@ Experiment with securing containerized application by scanning for vulnerabiliti
 
 * [Securing Containerized Applications](modules/security/README.md)
 
-## Module : Deploy an Azure Container Registry
 
-* [Deploy Containers to Azure Containers Registry with Continuous Deployment](modules/acr/acr.md)
