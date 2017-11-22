@@ -15,7 +15,7 @@ In this setup, you will create a linux jumpbox VM in Azure using the Azure Porta
 - Setup Step 1: [Deploy a simple Linux VM jumpbox using portal](setup/deploy-linuxjumpbox.md)
 - Setup Step 2: [Login to Azure CLI](setup/xplat-cli-login.md)
 - Setup Step 3: [Install Docker on the jumpbox](setup/azdockerinstall.md)
-- Setup Step 4: [Clone this github respository](setup/gitclone.md)
+- Setup Step 4: [Clone this github repository](setup/gitclone.md)
 
 
 ## Module : Deploy some containers on your jumpbox ##

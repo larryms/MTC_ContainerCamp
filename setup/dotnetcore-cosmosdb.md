@@ -1,7 +1,7 @@
 #Create CosmosDB Data Store
 The dotnetcore project requires access to a CosmosDB instance running in an Azure Subscription.  These steps walkthrough the creation of this repository and configuration of the project.
 
-Parameters - use this space to define the vairables used when creating the CosmosDB.  Blank spaces require a unique value for your project.  Completed items are the defaults for the project.  If you change these, you will need to update the Settings.cs with the new values.
+Parameters - use this space to define the variables used when creating the CosmosDB.  Blank spaces require a unique value for your project.  Completed items are the defaults for the project.  If you change these, you will need to update the `Settings.cs` with the new values.
 
 Resource Group - 
 Account Name - 
@@ -39,7 +39,7 @@ az cosmosdb show -n accountname -g myResourceGroupName --output table
 ```
 Copy this value to use in the docker-compose file below.
 
-Next get the Primary Master Key.  This is avauilable from the following command.
+Next get the Primary Master Key.  This is available from the following command.
 ```
 az cosmosdb list-keys -n accountname - g myResourceGroupName
 ```
