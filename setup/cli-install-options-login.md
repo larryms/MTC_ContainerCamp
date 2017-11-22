@@ -36,12 +36,12 @@
     ]
     
     ```
-    > Note:  If your AAD policy requires multi-factor authentication, you will need to excute the following command:
+    > Note:  If your AAD policy requires multi-factor authentication, you will need to execute the following command:
     > ```
     > az login
     > ```
     > You will receive a token that you must then authenticate your device with at [http://aka.ms/devicelogin](http://aka.ms/devicelogin).  It is recommended to access that Url with a InPrivate/InCognito browser session to avoid cookie conflicts.
-    Then use following command to list your subscriotions to get the subscrition id for the desired subscation to deploy your lab resources:
+    Then use following command to list your subscriptions to get the subscrition id for the desired subscription to deploy your lab resources:
     > ```
     > az account list
     > ```
