@@ -20,7 +20,7 @@ Let's test it:
 ```bash
 docker info
 ```
-This command will show you info about your docker configation.  A sample:
+This command will show you info about your docker configuration.  A sample:
 ```
 adminuser@jumpbox:~$ docker info
 Containers: 1
