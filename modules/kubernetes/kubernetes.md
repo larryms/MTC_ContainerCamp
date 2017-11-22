@@ -46,8 +46,6 @@ Portal>Subscriptions>Your Subscription>Resource providers>Microsoft.ContainerSer
 ## Task 3: Create AKS Cluster
 1. Create a new resource group for your AKS to reside in.  Note that AKS must be created in **westus2** as the service is only available there at this time.
 
-Please refer to [here](https://github.com/Azure/AKS/issues/2) to get the latest on region availability. 
-
 ```
     az group create --name=<RESOURCE_GROUP_NAME> --location="westus2"
 ```        
@@ -170,6 +168,3 @@ The Kubernetes Dashboard is web interface that provides general-purpose monitori
     ```
      az aks browse -n [Cluster Name] -g [Resource Group] 
     ```
-## Managing your K8s cluster using Cabin app (Optional) ##
-Follow this blog post to install and configure Cabin to manage your k8s cluster on your iOS or Android device:
-[Manageing Azure Kubernetes Managed Service via Cabin app](https://blogs.msdn.microsoft.com/alimaz/2017/10/31/managing-azure-kubernetes-managed-service-aks-using-cabin-app/)
