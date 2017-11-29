@@ -44,12 +44,11 @@ westcentralus  mySwarmCluster  Succeeded            SwarmRG
 Now that the cluster is deployed, we need to ssh to the master.  The first step is to find the DNS name that was assigned to the master.  We can find this using the cli:
 
 
-    MASTERFQDN=$(az acs list -o tsv --query [0].masterProfile.fqdn); echo $MASTERFQDN
-
-
+    MASTERFQDN=$(az acs list -o tsv --query [].masterProfile.fqdn|grep swarmrg); echo $MASTERFQDN
+    
 Similarly, we need to find and save the DNS name for the agents in our cluster.  Run the following command:
 
-    AGENTFQDN=$(az acs list -o tsv --query [0].agentPoolProfiles[0].fqdn); echo $AGENTFQDN
+    AGENTFQDN=$(az acs list -o tsv --query [].agentPoolProfiles[0].fqdn|grep swarmrg); echo $AGENTFQDN
 
 Make note of this name (save it to a scratchpad); we'll refer to it later as AGENTFQDN.
 
