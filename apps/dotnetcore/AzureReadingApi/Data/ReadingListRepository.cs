@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using AzureReadingList.Models;
+using AzureReadingCore.Models;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using System.Threading.Tasks;
@@ -9,13 +9,13 @@ using Microsoft.Azure.Documents.Linq;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace AzureReadingList.Data
+namespace AzureReadingApi.Data
 {
     public static class ReadingListRepository<T> where T : class
     {
         public static readonly string DatabaseId = Settings.DatabaseId;
         public static readonly string CollectionId = Settings.CollectionId;
-        private static string endpoint = Settings.EndPoint;
+        private static string endpoint = Settings.EndPointDocDb;
         private static string authKey = Settings.ReadWriteAuthKey;
 
         private static DocumentClient client;

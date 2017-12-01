@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using AzureReadingList.Data;
 using AzureReadingList.Models;
+using AzureReadingCore.Models;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace AzureReadingList.Controllers
 {
@@ -15,10 +17,17 @@ namespace AzureReadingList.Controllers
         public async Task<ActionResult> Index()
         {
             ReadingListViewModel readingListContent = new ReadingListViewModel();
-            readingListContent.LibraryBooks = await ReadingListRepository<Recommendation>.GetBooks(d => d.type == "recommendation");
 
-            ReadingListRepository<Book>.Initialize();   
-            readingListContent.MyBooks = (IEnumerable<Book>) await ReadingListRepository<Book>.GetBooksForUser(b => b.reader == Settings.readerName);
+            //get recommendations
+            HttpHelper recommedData = new HttpHelper("api/Books/Recommendations");
+            String recommendDataResponse = await recommedData.GetResponse();
+            readingListContent.LibraryBooks = JsonConvert.DeserializeObject<IEnumerable<Recommendation>>(recommendDataResponse);
+
+            //get user books
+            HttpHelper userData = new HttpHelper("api/Books/user");
+            String userDataResponse = await userData.GetResponse();
+            readingListContent.MyBooks = JsonConvert.DeserializeObject<IEnumerable<Book>>(userDataResponse);
+            
             return View(readingListContent);
         }
 
@@ -31,14 +40,18 @@ namespace AzureReadingList.Controllers
             {
                 Book myNewBookToSave = SaveCollectionAsBook(collection);
 
-                ReadingListRepository<Book>.Initialize();
-
-                await ReadingListRepository<Book>.UpsertBookForUser(myNewBookToSave);
-
+                HttpHelper postHelper = new HttpHelper("api/Books/User/Create");
+                string response = await postHelper.PostRequest(JsonConvert.SerializeObject(myNewBookToSave));
+                
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
+                ErrorViewModel error = new ErrorViewModel()
+                {
+                    RequestId = ex.Source,
+                    ErrorMessage = ex.Message
+                };
                 return View();
             }
         }
@@ -59,12 +72,12 @@ namespace AzureReadingList.Controllers
         // GET: ReadingList/Edit/5
         public async Task<ActionResult> Edit(string id)
         {
-            //get the requested record.
-            ReadingListRepository<Book>.Initialize();
 
-            IEnumerable<Book> myBooks = (IEnumerable<Book>) await ReadingListRepository<Book>.GetBooksForUser(b => b.id == id.ToString());
+            HttpHelper editData = new HttpHelper("api/Books/User/Edit/" + id);
+            String editDataResponse = await editData.GetResponse();
+            Book myBookToEdit = JsonConvert.DeserializeObject<Book>(editDataResponse);
 
-            return View(myBooks.First());
+            return View(myBookToEdit);
         }
 
         // POST: ReadingList/Edit/5
@@ -76,9 +89,9 @@ namespace AzureReadingList.Controllers
             {
                 Book updatedBook = SaveCollectionAsBook(collection);
 
-                ReadingListRepository<Book>.Initialize();
-                await ReadingListRepository<Book>.UpsertBookForUser(updatedBook);
-                    
+                HttpHelper postHelper = new HttpHelper("api/Books/User/Create");
+                string response = await postHelper.PostRequest(JsonConvert.SerializeObject(updatedBook));
+                     
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -92,8 +105,9 @@ namespace AzureReadingList.Controllers
         {
             try
             {
-                ReadingListRepository<Book>.Initialize();
-                await ReadingListRepository<Book>.RemoveBookForUser(id);
+                HttpHelper deleteHelper = new HttpHelper("api/Books/User/Remove/" + id);
+                string deleteHelperResponse = await deleteHelper.GetResponse();
+
             }
             catch (Exception ex)
             {
