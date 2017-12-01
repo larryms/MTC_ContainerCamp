@@ -42,10 +42,9 @@ namespace AzureReadingList.Controllers
             {
                 Book myNewBookToSave = SaveCollectionAsBook(collection);
 
-                ReadingListRepository<Book>.Initialize();
-
-                await ReadingListRepository<Book>.UpsertBookForUser(myNewBookToSave);
-
+                HttpHelper postHelper = new HttpHelper("api/Books/User/Create");
+                string response = await postHelper.PostRequest(JsonConvert.SerializeObject(myNewBookToSave));
+                
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using AzureReadingCore.Models;
 using AzureReadingApi.Data;
+using Newtonsoft.Json;
 
 namespace AzureReadingApi.Controllers
 {
@@ -47,7 +48,20 @@ namespace AzureReadingApi.Controllers
             IEnumerable<Recommendation> recomms = (IEnumerable<Recommendation>) await ReadingListRepository<Recommendation>.GetBooks(d => d.type == "recommendation");
             return recomms;
         }
-        
+
+        [Route("User/Create")]
+        public async Task<string> SaveBook([FromBody] string content)
+        {
+            ReadingListRepository<Book>.Initialize();
+
+            Book myNewBookToSave = JsonConvert.DeserializeObject<Book>(content);
+
+            await ReadingListRepository<Book>.UpsertBookForUser(myNewBookToSave);
+
+            return "Success";
+
+        }
+
         [Route("User/Edit/{id}")]
         public async Task<Book> GetBook(string id)
         {
@@ -58,5 +72,7 @@ namespace AzureReadingApi.Controllers
 
             return myBooks.First();
         }
+
+
     }
 }
