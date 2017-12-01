@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using AzureReadingList.Data;
 using AzureReadingList.Models;
 using AzureReadingCore.Models;
 using Newtonsoft.Json;
@@ -37,7 +36,6 @@ namespace AzureReadingList.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(IFormCollection collection)
         {
-            //TODO: Call api logic
             try
             {
                 Book myNewBookToSave = SaveCollectionAsBook(collection);
@@ -91,9 +89,9 @@ namespace AzureReadingList.Controllers
             {
                 Book updatedBook = SaveCollectionAsBook(collection);
 
-                ReadingListRepository<Book>.Initialize();
-                await ReadingListRepository<Book>.UpsertBookForUser(updatedBook);
-                    
+                HttpHelper postHelper = new HttpHelper("api/Books/User/Create");
+                string response = await postHelper.PostRequest(JsonConvert.SerializeObject(updatedBook));
+                     
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -107,8 +105,9 @@ namespace AzureReadingList.Controllers
         {
             try
             {
-                ReadingListRepository<Book>.Initialize();
-                await ReadingListRepository<Book>.RemoveBookForUser(id);
+                HttpHelper deleteHelper = new HttpHelper("api/Books/User/Remove/" + id);
+                string deleteHelperResponse = await deleteHelper.GetResponse();
+
             }
             catch (Exception ex)
             {

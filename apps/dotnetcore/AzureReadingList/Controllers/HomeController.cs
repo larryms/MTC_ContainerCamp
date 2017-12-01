@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AzureReadingList.Models;
-using AzureReadingList.Data;
 using AzureReadingCore.Models;
 
 namespace AzureReadingList.Controllers
@@ -29,9 +28,8 @@ namespace AzureReadingList.Controllers
 
         public async Task<IActionResult> Deploy()
         {
-            ReadingListRepository<Recommendation>.Initialize();
-
-            await ReadingListRepository<Recommendation>.StartUpMode(); 
+            HttpHelper startupHelper = new HttpHelper("api/Books/StartUp");
+            string startupHelperResponse = await startupHelper.GetResponse();
 
             return RedirectToAction("Index", "ReadingList");
         }

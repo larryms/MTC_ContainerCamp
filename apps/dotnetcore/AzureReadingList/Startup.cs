@@ -6,9 +6,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using AzureReadingList.Data;
-using AzureReadingList.Models;
-using AzureReadingCore.Models;
 
 namespace AzureReadingList
 {
@@ -49,9 +46,7 @@ namespace AzureReadingList
                     name: "default",
                     template: "{controller=ReadingList}/{action=Index}/{id?}");
             });
-
-            ReadingListRepository<Recommendation>.Initialize();
-            
+                        
         }
     }
 }

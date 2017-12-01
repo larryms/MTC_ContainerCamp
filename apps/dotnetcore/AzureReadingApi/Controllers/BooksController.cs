@@ -54,9 +54,9 @@ namespace AzureReadingApi.Controllers
         {
             ReadingListRepository<Book>.Initialize();
 
-            Book myNewBookToSave = JsonConvert.DeserializeObject<Book>(content);
+            Book myBookToSave = JsonConvert.DeserializeObject<Book>(content);
 
-            await ReadingListRepository<Book>.UpsertBookForUser(myNewBookToSave);
+            await ReadingListRepository<Book>.UpsertBookForUser(myBookToSave);
 
             return "Success";
 
@@ -73,6 +73,23 @@ namespace AzureReadingApi.Controllers
             return myBooks.First();
         }
 
+        [Route("User/Remove/{id}")]
+        public async Task<string> DeleteBook(string id)
+        {
+            ReadingListRepository<Book>.Initialize();
+            await ReadingListRepository<Book>.RemoveBookForUser(id);
 
+            return "success";
+        }
+
+        [Route("StartUp")]
+        public async Task<string> StartUp()
+        {
+            ReadingListRepository<Recommendation>.Initialize();
+
+            await ReadingListRepository<Recommendation>.StartUpMode();
+
+            return "success";
+        }
     }
 }
