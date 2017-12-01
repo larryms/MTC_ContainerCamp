@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using AzureReadingList.Models;
+using AzureReadingCore.Models;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents.Linq;
 using System.Linq;
 using System.Linq.Expressions;
-using AzureReadingCore.Models;
 
-namespace AzureReadingList.Data
+namespace AzureReadingApi.Data
 {
     public static class ReadingListRepository<T> where T : class
     {

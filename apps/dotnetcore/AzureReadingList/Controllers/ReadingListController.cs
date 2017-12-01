@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using AzureReadingList.Data;
 using AzureReadingList.Models;
 using AzureReadingCore.Models;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace AzureReadingList.Controllers
 {
@@ -15,12 +17,18 @@ namespace AzureReadingList.Controllers
         // GET: ReadingList
         public async Task<ActionResult> Index()
         {
-            //TODO: call api logic 
             ReadingListViewModel readingListContent = new ReadingListViewModel();
-            readingListContent.LibraryBooks = await ReadingListRepository<Recommendation>.GetBooks(d => d.type == "recommendation");
 
-            ReadingListRepository<Book>.Initialize();   
-            readingListContent.MyBooks = (IEnumerable<Book>) await ReadingListRepository<Book>.GetBooksForUser(b => b.reader == Settings.readerName);
+            //get recommendations
+            HttpHelper recommedData = new HttpHelper("api/Books/Recommendations");
+            String recommendDataResponse = await recommedData.GetResponse();
+            readingListContent.LibraryBooks = JsonConvert.DeserializeObject<IEnumerable<Recommendation>>(recommendDataResponse);
+
+            //get user books
+            HttpHelper userData = new HttpHelper("api/Books/user");
+            String userDataResponse = await userData.GetResponse();
+            readingListContent.MyBooks = JsonConvert.DeserializeObject<IEnumerable<Book>>(userDataResponse);
+            
             return View(readingListContent);
         }
 
@@ -42,6 +50,11 @@ namespace AzureReadingList.Controllers
             }
             catch (Exception ex)
             {
+                ErrorViewModel error = new ErrorViewModel()
+                {
+                    RequestId = ex.Source,
+                    ErrorMessage = ex.Message
+                };
                 return View();
             }
         }
@@ -62,12 +75,12 @@ namespace AzureReadingList.Controllers
         // GET: ReadingList/Edit/5
         public async Task<ActionResult> Edit(string id)
         {
-            //get the requested record.
-            ReadingListRepository<Book>.Initialize();
 
-            IEnumerable<Book> myBooks = (IEnumerable<Book>) await ReadingListRepository<Book>.GetBooksForUser(b => b.id == id.ToString());
+            HttpHelper editData = new HttpHelper("api/Books/User/Edit/" + id);
+            String editDataResponse = await editData.GetResponse();
+            Book myBookToEdit = JsonConvert.DeserializeObject<Book>(editDataResponse);
 
-            return View(myBooks.First());
+            return View(myBookToEdit);
         }
 
         // POST: ReadingList/Edit/5
