@@ -11,7 +11,7 @@ namespace AzureReadingList.Models
         private static HostInfo instance;
         public string HostIpAddress;
 
-        private HostInfo() 
+        private HostInfo()
         {
             IPHostEntry iPHostEntry = Dns.GetHostEntry(Dns.GetHostName());
             IPAddress ipAddress = iPHostEntry.AddressList[0];

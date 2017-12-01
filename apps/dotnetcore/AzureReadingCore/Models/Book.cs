@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace AzureReadingList.Models
+﻿namespace AzureReadingCore.Models
 {
     public class Book
     {
