@@ -1,5 +1,5 @@
 ## Deploy Application to Openshift
-In this lab you will deploy the readinglist application to Kubernetes cluster. In Kubernetes a group of one or more containers run as a pod. Once deployed you will have a total of 2 pods. One for the app tier and one for MySQL. The app tier pods will have both “ReadingList Web App” and “Recommendation Web API”. The Web App talks to both MYSQL and the Web API. 
+In this lab you will deploy the readinglist application to Kubernetes cluster. In Kubernetes a group of one or more containers run as a pod. Once deployed you will have a total of 2 pods. One for the app tier and one for MySQL. The app tier pods will have both ReadingList Web App and Recommendation Web API. The Web App talks to both MYSQL and the Web API. 
 
 ## Task 1: Login to your environment with Openshift CLI
 
